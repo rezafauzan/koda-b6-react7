@@ -3,7 +3,7 @@ import moment from "moment"
 import { useForm } from "react-hook-form"
 
 
-const TodoItem = ({ todos = null, setter = ()=>{} }) => {
+const TodoItem = ({ todos = null, setter = () => { } }) => {
     return (
         <ul>
             {
@@ -37,7 +37,7 @@ const TodoItem = ({ todos = null, setter = ()=>{} }) => {
                             return (
                                 <label key={todo.id}>
                                     <div className="flex gap-4 flex-1">
-                                        <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} />
+                                        <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} checked={todos[index].done.length > 0 ? true : false} />
                                         <span ref={todoName}>{todo.name}</span>
                                     </div>
                                     <div className="flex flex-col pl-16 flex-1">
@@ -115,7 +115,7 @@ function App() {
                     <h1 className="w-full text-xl font-bold">To Do:</h1>
                     <ul className="w-full flex flex-col gap-4">
                         <li>
-                            <TodoItem todos={todos} setter={setTodos}/>
+                            <TodoItem todos={todos} setter={setTodos} />
                         </li>
                     </ul>
                 </div>

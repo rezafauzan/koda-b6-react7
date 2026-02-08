@@ -1,41 +1,18 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import moment from "moment"
 
-const todos = [
-    {
-        id: 1,
-        name: "cuci pakaian",
-        createdAt: "22 januari 2025",
-        doneAt: "24 januari 2025",
-        target: "26 januari 2025",
-    },
-    {
-        id: 2,
-        name: "beli bahan makanan seminggu",
-        createdAt: "22 januari 2025",
-        doneAt: "24 januari 2025",
-        target: "26 januari 2025",
-    },
-    {
-        id: 3,
-        name: "cuci motor",
-        createdAt: "22 januari 2025",
-        doneAt: "24 januari 2025",
-        target: "26 januari 2025",
-    },
-    {
-        id: 4,
-        name: "weekly",
-        createdAt: "22 januari 2025",
-        doneAt: "24 januari 2025",
-        target: "26 januari 2025",
-    }
-]
 
 const TodoItem = () => {
+    const [todos, setTodos] = useState(null)
+    useEffect(
+        () => {
+            setTodos(window.localStorage.getItem('todos'))
+        }, []
+    )
     return (
         <ul>
             {
+                todos != null ?
                 todos.map(
                     todo => {
                         const checkbox = useRef()
@@ -76,6 +53,8 @@ const TodoItem = () => {
                         )
                     }
                 )
+                :
+                "Loading..."
             }
         </ul>
     )

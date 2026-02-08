@@ -74,6 +74,9 @@ function App() {
             window.localStorage.setItem('todos', JSON.stringify(currentData))
         }else{
             const todo = []
+            data.id = 1
+            data.createdAt = moment().format("DD MMMM YYYY")
+            data.target = moment(data.target, "DD MMMM YYYY").format("DD MMMM YYYY")
             todo.push(data)
             setTodos(todo)
             window.localStorage.setItem('todos', JSON.stringify(todo))

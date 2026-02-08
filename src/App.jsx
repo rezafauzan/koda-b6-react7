@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useRef } from "react"
 import moment from "moment"
 
-const todo = [
+const todos = [
     {
         id: 1,
         name: "cuci pakaian",
@@ -33,40 +33,50 @@ const todo = [
 ]
 
 const TodoItem = () => {
-    const checkbox = React.useRef()
-    const todoName = React.useRef()
-    const todoDone = React.useRef()
-    function toggleStatus() {
-        if (checkbox.current.checked) {
-            todoName.current.classList.add('line-through')
-            todoDone.current.textContent = moment().format('DD-MM-YYYY hh:mm:ss')
-        } else {
-            todoName.current.classList.remove('line-through')
-            todoDone.current.textContent = ''
-        }
-    }
     return (
         <ul>
-            <label>
-                <div className="flex gap-4 flex-1">
-                    <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} />
-                    <span ref={todoName}>Tugas 1</span>
-                </div>
-                <div className="flex flex-col pl-16 flex-1">
-                    <div className="flex">
-                        <span className="font-bold w-50">Tanggal dibuat:</span>
-                        {/* <span ref={todoCreated} className="flex"> 28 Januari 2026</span> */}
-                    </div>
-                    <div className="flex">
-                        <span className="font-bold w-50">Target selesai:</span>
-                        {/* <span ref={todoDeadline} className="flex">02 Februari 2026</span> */}
-                    </div>
-                    <div className="flex">
-                        <span className="font-bold w-50">Selesai pada:</span>
-                        <span ref={todoDone} className="flex">01 Februari 2026</span>
-                    </div>
-                </div>
-            </label>
+            {
+                todos.map(
+                    todo => {
+                        const checkbox = useRef()
+                        const todoName = useRef()
+                        const todoCreated = useRef()
+                        const todoDeadline = useRef()
+                        const todoDone = useRef()
+                        function toggleStatus() {
+                            if (checkbox.current.checked) {
+                                todoName.current.classList.add('line-through')
+                                todoDone.current.textContent = moment().format('DD-MM-YYYY hh:mm:ss')
+                            } else {
+                                todoName.current.classList.remove('line-through')
+                                todoDone.current.textContent = ''
+                            }
+                        }
+                        return (
+                            <label>
+                                <div className="flex gap-4 flex-1">
+                                    <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} />
+                                    <span ref={todoName}>{todo.name}</span>
+                                </div>
+                                <div className="flex flex-col pl-16 flex-1">
+                                    <div className="flex">
+                                        <span className="font-bold w-50">Tanggal dibuat:</span>
+                                        <span ref={todoCreated} className="flex">{todo.createdAt}</span>
+                                    </div>
+                                    <div className="flex">
+                                        <span className="font-bold w-50">Target selesai:</span>
+                                        <span ref={todoDeadline} className="flex">{todo.target}</span>
+                                    </div>
+                                    <div className="flex">
+                                        <span className="font-bold w-50">Selesai pada:</span>
+                                        <span ref={todoDone} className="flex">-</span>
+                                    </div>
+                                </div>
+                            </label>
+                        )
+                    }
+                )
+            }
         </ul>
     )
 }

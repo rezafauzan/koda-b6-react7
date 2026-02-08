@@ -9,7 +9,7 @@ const TodoItem = ({todos = null}) => {
             {
                 todos != null ?
                     todos.map(
-                        todo => {
+                        (todo, index) => {
                             const checkbox = useRef()
                             const todoName = useRef()
                             const todoCreated = useRef()
@@ -25,7 +25,7 @@ const TodoItem = ({todos = null}) => {
                                 }
                             }
                             return (
-                                <label>
+                                <label key={index}>
                                     <div className="flex gap-4 flex-1">
                                         <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} />
                                         <span ref={todoName}>{todo.name}</span>
@@ -60,17 +60,19 @@ function App() {
     const [todos, setTodos] = useState(null)
     useEffect(
         () => {
-            setTodos(window.localStorage.getItem('todos'))
-        }, [todos]
+            setTodos(JSON.parse(window.localStorage.getItem('todos')))
+        }, []
     )
     function addToDo(data) {
         if(todos != null){
             const currentData = todos
             currentData.push(data)
+            setTodos(currentData)
             window.localStorage.setItem('todos', JSON.stringify(currentData))
         }else{
             const todo = []
             todo.push(data)
+            setTodos(todo)
             window.localStorage.setItem('todos', JSON.stringify(todo))
         }
     }
@@ -80,13 +82,13 @@ function App() {
                 <div className="section-header rounded bg-white shadow p-4 flex flex-col items-center gap-4">
                     <h1 className="text-xl font-bold">ToDo List React App</h1>
                     <form className="flex justify-center items-center gap-4" onSubmit={handleSubmit(addToDo)}>
-                        <label htmlFor="todoName" className="flex flex-col gap-4 border p-4 rounded">
+                        <label htmlFor="name" className="flex flex-col gap-4 border p-4 rounded">
                             Todo
-                            <input type="text" {...register("todoName")} id="todoName" className="outline-0 border-b" placeholder="Add todo name" />
+                            <input type="text" {...register("name")} id="name" className="outline-0 border-b" placeholder="Add todo name" />
                         </label>
-                        <label htmlFor="todoTarget" className="flex flex-col gap-4 border p-4 rounded">
+                        <label htmlFor="target" className="flex flex-col gap-4 border p-4 rounded">
                             When Todo Target Done
-                            <input type="date" {...register("todoTarget")} id="todoTarget" className="outline-0 border-b" placeholder="08 february 2026" />
+                            <input type="date" {...register("target")} id="target" className="outline-0 border-b" placeholder="08 february 2026" />
                         </label>
                         <button type="submit" className="bg-black h-10 flex flex-col justify-center items-center p-4 rounded text-white">Add todo</button>
                     </form>

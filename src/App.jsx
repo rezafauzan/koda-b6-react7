@@ -3,7 +3,7 @@ import moment from "moment"
 import { useForm } from "react-hook-form"
 
 
-const TodoItem = ({todos = null}) => {
+const TodoItem = ({ todos = null, setter = ()=>{} }) => {
     return (
         <ul>
             {
@@ -19,13 +19,23 @@ const TodoItem = ({todos = null}) => {
                                 if (checkbox.current.checked) {
                                     todoName.current.classList.add('line-through')
                                     todoDone.current.textContent = moment().format('DD MMMM YYYY hh:mm:ss')
+                                    if (todos[index].done === "") {
+                                        todos[index].done = moment().format('DD MMMM YYYY hh:mm:ss')
+                                        setter(todos)
+                                        window.localStorage.setItem('todos', JSON.stringify(todos))
+                                    }
                                 } else {
                                     todoName.current.classList.remove('line-through')
                                     todoDone.current.textContent = ''
+                                    if (todos[index].done.length > 0) {
+                                        todos[index].done = ''
+                                        setter(todos)
+                                        window.localStorage.setItem('todos', JSON.stringify(todos))
+                                    }
                                 }
                             }
                             return (
-                                <label key={index}>
+                                <label key={todo.id}>
                                     <div className="flex gap-4 flex-1">
                                         <input ref={checkbox} type="checkbox" id="checkbox" name="todo" className="w-7 h-7" onChange={toggleStatus} />
                                         <span ref={todoName}>{todo.name}</span>
@@ -64,19 +74,21 @@ function App() {
         }, []
     )
     function addToDo(data) {
-        if(todos != null){
+        if (todos != null) {
             const currentData = todos
             data.id = todos.length + 1
             data.createdAt = moment().format("DD MMMM YYYY")
             data.target = moment(data.target, "DD MMMM YYYY").format("DD MMMM YYYY")
+            data.done = ''
             currentData.push(data)
             setTodos(currentData)
             window.localStorage.setItem('todos', JSON.stringify(currentData))
-        }else{
+        } else {
             const todo = []
             data.id = 1
             data.createdAt = moment().format("DD MMMM YYYY")
             data.target = moment(data.target, "DD MMMM YYYY").format("DD MMMM YYYY")
+            data.done = ''
             todo.push(data)
             setTodos(todo)
             window.localStorage.setItem('todos', JSON.stringify(todo))
@@ -103,7 +115,7 @@ function App() {
                     <h1 className="w-full text-xl font-bold">To Do:</h1>
                     <ul className="w-full flex flex-col gap-4">
                         <li>
-                            <TodoItem todos={todos}/>
+                            <TodoItem todos={todos} setter={setTodos}/>
                         </li>
                     </ul>
                 </div>

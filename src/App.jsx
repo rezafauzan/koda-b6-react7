@@ -18,7 +18,7 @@ const TodoItem = ({todos = null}) => {
                             function toggleStatus() {
                                 if (checkbox.current.checked) {
                                     todoName.current.classList.add('line-through')
-                                    todoDone.current.textContent = moment().format('DD-MM-YYYY hh:mm:ss')
+                                    todoDone.current.textContent = moment().format('DD MMMM YYYY hh:mm:ss')
                                 } else {
                                     todoName.current.classList.remove('line-through')
                                     todoDone.current.textContent = ''
@@ -66,6 +66,9 @@ function App() {
     function addToDo(data) {
         if(todos != null){
             const currentData = todos
+            data.id = todos.length + 1
+            data.createdAt = moment().format("DD MMMM YYYY")
+            data.target = moment(data.target, "DD MMMM YYYY").format("DD MMMM YYYY")
             currentData.push(data)
             setTodos(currentData)
             window.localStorage.setItem('todos', JSON.stringify(currentData))

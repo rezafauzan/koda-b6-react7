@@ -51,7 +51,7 @@ const TodoItem = ({ todos = null, setter = () => { } }) => {
                                         </div>
                                         <div className="flex">
                                             <span className="font-bold w-50">Selesai pada:</span>
-                                            <span ref={todoDone} className="flex">-</span>
+                                            <span ref={todoDone} className="flex">{todos[index].done.length > 0 ? todos[index].done : "-"}</span>
                                         </div>
                                     </div>
                                 </label>
